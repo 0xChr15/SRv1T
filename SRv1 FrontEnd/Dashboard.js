@@ -45,7 +45,7 @@ dashboard.appendChild(userInfo);
 
 const username = "User Name";
 const userGreeting = document.createElement("h3");
-userGreeting.textContent = Gm, {username};
+userGreeting.textContent = 'Gm, {username}';
 userGreeting.style.margin = "0";
 userInfo.appendChild(userGreeting);
 
