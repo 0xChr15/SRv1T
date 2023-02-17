@@ -3,9 +3,9 @@ const mysql = require('mysql');
 // Connection pooling
 const pool = mysql.createPool({
     connectionLimit: 10,
-    host: "localhost:3306",
+    host: "127.0.0.1",
     user: "root",
-    password: "_______",
+    password: "root123",
     database: "standaregtest1"
 });
 

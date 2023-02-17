@@ -4,8 +4,8 @@ const knex = require('knex')({
         connectionLimit: 10,
         host: "localhost:3306",
         user: "root",
-        password: "_______",
-        database: "standaregtest1"
+        password: "roo123!",
+        database: "standaregtest1.ethereum_data"
     }
   });
 
