@@ -1,0 +1,7 @@
+const shortcutPath = 'C:\\Users\\%USERNAME%\\Desktop\\StandaReg.lnk';
+const targetPath = 'C:\\Program Files\\StandaReg\\StandaReg.exe';
+
+const WshShell = new ActiveXObject("WScript.Shell");
+const shortcut = WshShell.CreateShortcut(shortcutPath);
+shortcut.TargetPath = targetPath;
+shortcut.Save();
