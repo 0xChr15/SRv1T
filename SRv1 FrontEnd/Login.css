@@ -1,8 +1,8 @@
 body {
-    background-image: url('path/to/genesis-block-image.png');
+    background-image: url('https://www.google.com/search?q=bitcoin+genesis+block+transparent+png+URL&rlz=1C1CHBF_enUS900US900&sxsrf=AJOqlzUy-M9ikRcjEyW9OWlLx5qsvIWLHg:1676877119774&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi0krmIxqP9AhUkmIQIHfhlCygQ_AUoAXoECAEQAw&biw=1366&bih=657&dpr=1#imgrc=_GagoWAr7ljTtM');
     background-repeat: no-repeat;
     background-size: cover;
-    background-color: black;
+    background-color: teal;
   }
 
   .login-box {
