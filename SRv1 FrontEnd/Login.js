@@ -10,3 +10,8 @@ const password = passwordInput.value;
 
 // Perform login action with the provided username and password
 });
+
+// After validating user credentials:
+if (validUser) {
+    window.location.href = "dashboard.html";
+  }

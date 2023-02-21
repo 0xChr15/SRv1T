@@ -66,3 +66,7 @@ totalDatabases.addEventListener("click", () => {
 window.location.href = "#databases";
 });
 databases
+
+const dashboard = document.createElement("div");
+// ... code for creating the dashboard ...
+document.getElementById("dashboard").appendChild(dashboard);
