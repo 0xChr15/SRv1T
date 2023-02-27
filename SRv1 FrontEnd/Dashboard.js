@@ -1,4 +1,6 @@
 const dashboard = document.createElement("div");
+// ... code for creating the dashboard ...
+document.getElementById("dashboard").appendChild(dashboard);
 dashboard.style.backgroundColor = "#333";
 dashboard.style.color = "#fff";
 dashboard.style.width = "100%";
