@@ -55,3 +55,126 @@ createAccountForm.addEventListener('submit', (event) => {
   // Reset the form
   createAccountForm.reset();
 });
+
+// Create an account page
+const createAccount = document.createElement("div");
+createAccount.style.backgroundColor = "#fff";
+createAccount.style.color = "#333";
+createAccount.style.width = "100%";
+createAccount.style.height = "100%";
+createAccount.style.fontFamily = "EB Garamond";
+document.body.appendChild(createAccount);
+
+const header = document.createElement("div");
+header.style.display = "flex";
+header.style.justifyContent = "space-between";
+header.style.alignItems = "center";
+header.style.padding = "15px";
+header.style.backgroundColor = "#444";
+createAccount.appendChild(header);
+
+const logo = document.createElement("img");
+logo.src = "https://commons.wikimedia.org/wiki/File:Bitcoin-Genesis-block.jpg";
+logo.style.height = "50px";
+header.appendChild(logo);
+
+const formContainer = document.createElement("div");
+formContainer.style.display = "flex";
+formContainer.style.flexDirection = "column";
+formContainer.style.alignItems = "center";
+createAccount.appendChild(formContainer);
+
+const title = document.createElement("h2");
+title.textContent = "Create an Account";
+title.style.marginTop = "50px";
+title.style.marginBottom = "20px";
+formContainer.appendChild(title);
+
+const form = document.createElement("form");
+form.style.display = "flex";
+form.style.flexDirection = "column";
+form.style.width = "300px";
+form.style.marginBottom = "30px";
+formContainer.appendChild(form);
+
+const usernameLabel = document.createElement("label");
+usernameLabel.textContent = "Username";
+usernameLabel.setAttribute("for", "username");
+form.appendChild(usernameLabel);
+
+const usernameInput = document.createElement("input");
+usernameInput.setAttribute("type", "text");
+usernameInput.setAttribute("id", "username");
+form.appendChild(usernameInput);
+
+const passwordLabel = document.createElement("label");
+passwordLabel.textContent = "Password";
+passwordLabel.setAttribute("for", "password");
+form.appendChild(passwordLabel);
+
+const passwordInput = document.createElement("input");
+passwordInput.setAttribute("type", "password");
+passwordInput.setAttribute("id", "password");
+form.appendChild(passwordInput);
+
+const confirmPasswordLabel = document.createElement("label");
+confirmPasswordLabel.textContent = "Confirm Password";
+confirmPasswordLabel.setAttribute("for", "confirm-password");
+form.appendChild(confirmPasswordLabel);
+
+const confirmPasswordInput = document.createElement("input");
+confirmPasswordInput.setAttribute("type", "password");
+confirmPasswordInput.setAttribute("id", "confirm-password");
+form.appendChild(confirmPasswordInput);
+
+const submitButton = document.createElement("button");
+submitButton.textContent = "Create an Account";
+submitButton.style.backgroundColor = "#444";
+submitButton.style.color = "#fff";
+submitButton.style.border = "none";
+submitButton.style.padding = "10px 20px";
+submitButton.style.borderRadius = "5px";
+submitButton.style.marginTop = "20px";
+form.appendChild(submitButton);
+
+// Change background and details
+createAccount.style.backgroundImage = "https://commons.wikimedia.org/wiki/File:Bitcoin-Genesis-block.jpg";
+createAccount.style.backgroundSize = "cover";
+createAccount.style.color = "#fff";
+
+// Add success message
+function showSuccessMessage() {
+  const successMessage = document.createElement("div");
+  successMessage.textContent = "Account created successfully!";
+  successMessage.style.backgroundColor = "#8BC34A";
+  successMessage.style.color = "#fff";
+  successMessage.style.padding = "15px";
+  successMessage.style.borderRadius = "5px";
+  successMessage.style.position = "fixed";
+  successMessage.style.top = "20px";
+  successMessage.style.right = "20px";
+  document.body.appendChild(successMessage);
+  setTimeout(() => {
+    document.body.removeChild(successMessage);
+  }, 3000);
+}
+
+// Add submit button event listener
+submitButton.addEventListener("click", (event) => {
+  event
+  .preventDefault();
+
+const username = usernameInput.value;
+const password = passwordInput.value;
+const confirmPassword = confirmPasswordInput.value;
+
+if (password !== confirmPassword) {
+alert("Passwords do not match!");
+} else {
+// Code to create account and redirect to login screen goes here
+showSuccessMessage();
+setTimeout(() => {
+window.location.href = "login.html";
+}, 3000);
+}
+});
