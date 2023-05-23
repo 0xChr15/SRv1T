@@ -178,3 +178,78 @@ window.location.href = "login.html";
 }, 3000);
 }
 });
+
+submitButton.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  const username = usernameInput.value;
+  const password = passwordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+  } else {
+    // Make a POST request to the server to create the account
+    fetch('/your-account-creation-endpoint', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Show success message and redirect to login screen
+        showSuccessMessage();
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 3000);
+      } else {
+        // Show error message
+        alert(data.error);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+});
+
+createAccountForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const username = usernameInput.value;
+  const password = passwordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+  } else {
+    fetch('https://your-server-url/your-account-creation-endpoint', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        // Display the error message from the server to the user
+        alert(data.error);
+      } else {
+        showSuccessMessage();
+        setTimeout(() => {
+          // Redirect to login screen
+          window.location.href = "login.html";
+        }, 3000);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+});

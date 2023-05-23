@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Dashboard</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <div id="dashboard"></div>
-    <script src="dashboard.js"></script>
-  </body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Dashboard</h1>
+
+    <form id="dashboard-form" method="POST">
+        <label for="new-report">New Report:</label>
+        <input type="text" id="new-report" name="new-report">
+        <button type="submit">Submit</button>
+    </form>
+
+    <table id="dashboard-data">
+        <!-- Data will be inserted here -->
+    </table>
+
+    <button id="logout-button">Logout</button>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
 </html>

@@ -93,3 +93,111 @@ totalDatabases.addEventListener("click", () => {
   window.location.href = "#databases";
 });
 databasesSection.appendChild(totalDatabases);
+
+// Fetch dashboard data from the server
+fetch('https://your-domain.com/dashboard-data', {
+    headers: {
+        'Content-Type': 'application/json',
+    },
+})
+.then(response => response.json())
+.then(data => {
+    // Insert data into the page
+    const list = document.querySelector('#dashboard-data');
+    for (const key in data) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${key}: ${data[key]}`;
+        list.appendChild(listItem);
+    }
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+
+// Handle logout
+document.querySelector('#logout-button').addEventListener('click', () => {
+    fetch('https://your-domain.com/logout', { method: 'POST' })
+    .then(() => {
+        window.location.href = 'login.html';
+    });
+});
+
+// Handle form submission
+document.querySelector('#dashboard-form').addEventListener('submit', event => {
+  event.preventDefault();
+
+  // Fetch form data
+  const formData = new FormData(event.target);
+  const newReport = formData.get('new-report');
+
+  // Send form data to server
+  fetch('https://your-domain.com/dashboard', {
+      method: 'POST',
+      body: formData,
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Update the table with the new data
+      updateTable(data);
+  })
+  .catch((error) => {
+      console.error('Error:', error);
+  });
+});
+
+// Function to update the table with new data
+function updateTable(data) {
+  const table = document.querySelector('#dashboard-data');
+  table.innerHTML = ''; // Clear existing data
+
+  for (const key in data) {
+      const row = document.createElement('tr');
+      const keyCell = document.createElement('td');
+      keyCell.textContent = key;
+      const valueCell = document.createElement('td');
+      valueCell.textContent = data[key];
+      row.appendChild(keyCell);
+      row.appendChild(valueCell);
+      table.appendChild(row);
+  }
+}
+
+// Fetch initial data when the page loads
+fetch('https://your-domain.com/dashboard-data', {
+  headers: {
+      'Content-Type': 'application/json',
+  },
+})
+.then(response => response.json())
+.then(updateTable)
+.catch((error) => {
+  console.error('Error:', error);
+});
+
+// Handle logout
+document.querySelector('#logout-button').addEventListener('click', () => {
+  fetch('https://your-domain.com/logout', { method: 'POST' })
+  .then(() => {
+      window.location.href = 'login.html';
+  });
+});
+
+// Get current user's role from the server
+fetch('https://your-domain.com/user-role', {
+    headers: {
+        'Content-Type': 'application/json',
+    },
+})
+.then(response => response.json())
+.then(data => {
+    // if the user is not an admin, disable the "generate report" button
+    if (data.role !== 'admin') {
+        const button = document.querySelector('#generate-report-button');
+        button.disabled = true;
+        button.title = "You don't have permission to generate reports";
+    }
+})
+.catch((error) => {
+    console.error('Error:', error);
+});
+

@@ -1,0 +1,27 @@
+body {
+    background-color: #222;
+    color: #fcfcfc;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+h1 {
+    color: #fc466b;
+}
+
+form, table {
+    background-color: #2f3640;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+button {
+    background-color: #00d8d6;
+    border: none;
+    border-radius: 5px;
+    color: #222;
+    padding: 0.5em 1em;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+}
