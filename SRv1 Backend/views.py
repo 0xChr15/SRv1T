@@ -31,3 +31,91 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html')  # Assuming you have a register.html in your templates folder
+
+from flask import Flask, send_file
+
+app = Flask(__name__)
+
+@app.route('/generate_report/<filetype>')
+def generate_report(filetype):
+    # Placeholder logic for generating report based on filetype
+    if filetype == 'docx':
+        # Use python-docx or similar library to generate DOCX file
+        pass
+    elif filetype == 'pdf':
+        # Use reportlab or similar library to generate PDF file
+        pass
+    elif filetype == 'xml':
+        # Use xml.etree.ElementTree or similar library to generate XML file
+        pass
+    else:
+        return 'Invalid file type!'
+
+    # For now, just return a placeholder text file
+    with open('report.txt', 'w') as f:
+        f.write('This is a placeholder report.')
+
+    return send_file('report.txt', as_attachment=True)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+from flask import Flask, send_file, jsonify
+import pymysql.cursors
+import os
+
+# Connect to the database
+connection = pymysql.connect(host='localhost',
+                             user='user',
+                             password='passwd',
+                             db='db',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+
+app = Flask(__name__)
+
+def get_report_data():
+    try:
+        with connection.cursor() as cursor:
+            # Select some data
+            sql = "SELECT `id`, `name` FROM `table`"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            return result
+    except Exception as e:
+        return str(e)
+
+@app.route('/generate_report/<filetype>')
+def generate_report(filetype):
+    # Fetch data for the report
+    data = get_report_data()
+
+    # Placeholder logic for generating report based on filetype and data
+    if filetype == 'docx':
+        # Use python-docx or similar library to generate DOCX file
+        pass
+    elif filetype == 'pdf':
+        # Use reportlab or similar library to generate PDF file
+        pass
+    elif filetype == 'xml':
+        # Use xml.etree.ElementTree or similar library to generate XML file
+        pass
+    else:
+        return jsonify({'error': 'Invalid file type!'}), 400
+
+    # For now, just return a placeholder text file
+    with open('report.txt', 'w') as f:
+        f.write(str(data))
+
+    return send_file('report.txt', as_attachment=True)
+
+@app.errorhandler(500)
+def internal_error(error):
+    return "500 error"
+
+@app.errorhandler(404)
+def not_found(error):
+    return "404 error", 404
+
+if __name__ == '__main__':
+    app.run(debug=True)

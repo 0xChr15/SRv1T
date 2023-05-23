@@ -102,3 +102,18 @@ document.querySelector('#login-form').addEventListener('submit', event => {
   });
 });
 
+const loading = document.querySelector('#loading');
+
+loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    // Show loading indicator
+    loading.style.display = 'block';
+
+    // Make request to server
+    // ...
+    // When request is finished, hide loading indicator
+    // ...
+    loading.style.display = 'none';
+});
+

@@ -212,4 +212,5 @@ login_manager.login_view = 'login'
 
 from your_application import views  # Replace your_application with the name of your main Flask application file (without the .py)
 
+from routes import *
 
