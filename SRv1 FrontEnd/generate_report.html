@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generate Report</title>
+    <link rel="stylesheet" href="generate_report.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Generate New Report</h1>
+      <button onclick="window.location.href='/generate_report/docx'">Generate DOCX</button>
+      <button onclick="window.location.href='/generate_report/pdf'">Generate PDF</button>
+      <button onclick="window.location.href='/generate_report/xml'">Generate XML</button>
+    </div>
+    <script src="generate_report.js"></script>
+  </body>
+</html>
+
+<div id="loading" style="display: none;">
+    <img src="loading.gif" alt="Loading..."> <!-- Replace this with the URL of your loading gif -->
+</div>
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generate Report</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="generate_report.js"></script>
+  </head>
+  <body>
+    <button id="generate">Generate Report</button>
+    <a id="download" href="#" style="display: none;">Download Report</a>
+  </body>
+</html>
+
+<link rel="stylesheet" type="text/css" href="styles.css">

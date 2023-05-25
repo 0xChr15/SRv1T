@@ -17,3 +17,18 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+db = SQLAlchemy()
+
+class Report(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    filepath = db.Column(db.String(120), unique=True, nullable=False)
+
+class User(db.Model):
+    # previous fields
+    reports = db.relationship('Report', backref='user', lazy=True)
+

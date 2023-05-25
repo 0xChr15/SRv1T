@@ -119,3 +119,37 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+from flask import Flask, render_template, jsonify, session
+from models import db, Report
+from sqlalchemy import create_engine
+import pandas as pd
+
+app = Flask(__name__)
+
+# other routes...
+
+@app.route('/generate_report')
+def generate_report():
+    user_id = session.get('user_id')  # get logged in user id
+    engine = create_engine('mysql://user:pass@localhost/dbname')
+    # query and report generation
+    # save report metadata in database
+    new_report = Report(user_id=user_id, filepath=report_filepath)
+    db.session.add(new_report)
+    db.session.commit()
+    return 'Report successfully generated.'
+
+@app.route('/view_reports')
+def view_reports():
+    user_id = session.get('user_id')  # get logged in user id
+    reports = Report.query.filter_by(user_id=user_id).all()
+    return jsonify([{'id': report.id, 'created_at': report.created_at, 'filepath': report.filepath} for report in reports])
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/generate_report')
+def generate_report_page():
+    return render_template('generateReport.html')

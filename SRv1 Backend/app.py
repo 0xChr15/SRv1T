@@ -214,3 +214,53 @@ from your_application import views  # Replace your_application with the name of 
 
 from routes import *
 
+from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+import boto3
+import os
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://username:password@localhost/db_name'
+db = SQLAlchemy(app)
+s3 = boto3.client('s3')
+
+# Assuming we have a User model
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f'<User {self.username}>'
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/generate_report', methods=['POST'])
+def generate_report():
+    report_type = request.form.get('report_type')
+
+    # Fetch data from MySQL
+    users = User.query.all()
+
+    # Generate report from data (pseudo-code)
+    # This should be replaced with actual report generation logic.
+    report_content = "\n".join([str(user) for user in users])
+
+    # For simplicity, let's save the report content into a text file
+    with open("report.txt", "w") as f:
+        f.write(report_content)
+
+    # Upload to S3
+    with open("report.txt", "rb") as data:
+        s3.upload_fileobj(data, 'mybucket', 'report.txt')
+
+    # Delete the local report file after upload
+    os.remove("report.txt")
+
+    return jsonify({'message': 'Report generated and uploaded to S3.'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+

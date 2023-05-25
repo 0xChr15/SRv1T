@@ -24,3 +24,4 @@ function insertTransactionData(txid, valueEth, valueUsd, timestamp, from, to) {
 pool.end(function (err) {
     console.log(err);
 });
+
