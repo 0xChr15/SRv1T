@@ -32,3 +32,22 @@ class User(db.Model):
     # previous fields
     reports = db.relationship('Report', backref='user', lazy=True)
 
+from flask_security import UserMixin, RoleMixin
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
+
+# In your main app.py
+from flask_security import Security, SQLAlchemyUserDatastore
+
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
+

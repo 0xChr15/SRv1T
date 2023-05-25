@@ -90,3 +90,47 @@
     </form>
 </body>
 </html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report Generation</title>
+    <script>
+        function submitForm(e) {
+            e.preventDefault();
+
+            const reportType = document.getElementById('report_type').value;
+
+            fetch('/generate_report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `report_type=${reportType}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').innerText = data.message;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <form onsubmit="submitForm(event)">
+        <label for="report_type">Report Type:</label><br>
+        <select id="report_type" name="report_type">
+            <option value="pdf">PDF</option>
+            <option value="docx">DOCX</option>
+            <option value="xml">XML</option>
+            <!-- add more options as necessary -->
+        </select><br>
+        <input type="submit" value="Generate Report">
+    </form>
+    <div id="message"></div>
+</body>
+</html>

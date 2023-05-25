@@ -21,3 +21,13 @@ $(document).ready(function() {
       });
     });
   });
+
+  // Example of simple JavaScript form validation
+let form = document.querySelector("form");
+form.addEventListener("submit", function(event) {
+  let email = document.querySelector("#email").value;
+  if (!email.includes("@")) {
+    alert("Please enter a valid email address.");
+    event.preventDefault();
+  }
+});

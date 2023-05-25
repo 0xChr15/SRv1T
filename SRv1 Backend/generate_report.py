@@ -33,3 +33,33 @@ def create_regulatory_report():
         row_cells[2].text = str(row['date'])
 
     document.save('regulatory_report.docx')
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
+from reportlab.lib.styles import getSampleStyleSheet
+from docx import Document
+
+def create_pdf_report(data, filename):
+    doc = SimpleDocTemplate(filename)
+    elements = []
+    styles = getSampleStyleSheet()
+
+    title = Paragraph("My Report", styles['Title'])
+    elements.append(title)
+    elements.append(Spacer(1, 0.2*inch))
+
+    for item in data:
+        ptext = '<font size=12>%s</font>' % item.strip()
+        elements.append(Paragraph(ptext, styles["Normal"]))
+        elements.append(Spacer(1, 0.2 * inch))
+
+    doc.build(elements)
+
+def create_docx_report(data, filename):
+    doc = Document()
+
+    doc.add_heading('My Report', 0)
+
+    for item in data:
+        doc.add_paragraph(item.strip())
+
+    doc.save(filename)

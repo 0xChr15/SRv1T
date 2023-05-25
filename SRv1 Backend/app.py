@@ -264,3 +264,129 @@ def generate_report():
 if __name__ == '__main__':
     app.run(debug=True)
 
+from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from google.cloud import storage
+import boto3
+import os
+from reportlab.pdfgen import canvas
+from docx import Document
+import xml.etree.ElementTree as ET
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://username:password@localhost/db_name'
+db = SQLAlchemy(app)
+s3 = boto3.client('s3')
+gcs = storage.Client()
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f'<User {self.username}>'
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/generate_report', methods=['POST'])
+def generate_report():
+    report_type = request.form.get('report_type')
+    users = User.query.all()
+
+    report_content = "\n".join([str(user) for user in users])
+
+    if report_type == 'pdf':
+        c = canvas.Canvas("report.pdf")
+        c.drawString(100, 750, report_content)
+        c.save()
+        filename = 'report.pdf'
+    elif report_type == 'docx':
+        doc = Document()
+        doc.add_paragraph(report_content)
+        doc.save("report.docx")
+        filename = 'report.docx'
+    elif report_type == 'xml':
+        root = ET.Element("root")
+        ET.SubElement(root, "data").text = report_content
+        tree = ET.ElementTree(root)
+        tree.write("report.xml")
+        filename = 'report.xml'
+    else:
+        return jsonify({'error': 'Invalid report type'})
+
+    with open(filename, "rb") as data:
+        s3.upload_fileobj(data, 'mybucket', filename)
+        bucket = gcs.get_bucket('mybucket')
+        blob = bucket.blob(filename)
+        blob.upload_from_file(data)
+
+    os.remove(filename)
+
+    return jsonify({'message': f'{report_type} Report generated and uploaded to S3 and GCS.'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+from flask import Flask, request
+from werkzeug.utils import secure_filename
+import boto3
+import os
+from google.cloud import storage
+
+app = Flask(__name__)
+
+def upload_file_to_s3(file, bucket_name, folder):
+    s3 = boto3.client('s3',
+                      aws_access_key_id='YOUR_ACCESS_KEY',
+                      aws_secret_access_key='YOUR_SECRET_KEY')
+    filename = secure_filename(file.filename)
+    s3.upload_fileobj(file, bucket_name, f'{folder}/{filename}')
+
+def upload_file_to_gcs(file, bucket_name, folder):
+    storage_client = storage.Client.from_service_account_json('path/to/keyfile.json')
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.blob(f'{folder}/{file.filename}')
+    blob.upload_from_file(file)
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    upload_file_to_s3(file, 'your-bucket-name', 'your-folder-name')
+    upload_file_to_gcs(file, 'your-bucket-name', 'your-folder-name')
+    return 'File uploaded successfully'
+
+# In your main app.py
+
+import logging
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+# Set up logging
+logging.basicConfig(filename='demo.log', level=logging.DEBUG)
+
+@app.route('/')
+def home():
+    app.logger.info('Processing default request')
+    return 'Hello, World!'
+
+@app.errorhandler(404)
+def page_not_found(e):
+    app.logger.error('Page not found: %s', (request.path))
+    return jsonify(error=404, text=str(e)), 404
+
+@app.before_request
+def before_request():
+    app.logger.debug('Request: %s %s %s %s', request.remote_addr, request.method, request.scheme, request.full_path)
+
+@app.errorhandler(500)
+def handle_500(e):
+    original = getattr(e, "original_exception", None)
+
+    if original is None:
+        return jsonify(error=500, text='generic server error'), 500
+
+    return jsonify(error=500, text='generic server error: %s' % str(original)), 500
