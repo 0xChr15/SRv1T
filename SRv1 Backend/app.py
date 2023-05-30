@@ -2,6 +2,25 @@ from flask import Flask, request, jsonify, redirect, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from datetime import datetime
+from werkzeug.security import check_password_hash
+
+class User:
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+
+users = [
+    User('user1', 'user1@example.com'),
+    User('user2', 'user2@example.com'),
+    User('user3', 'user3@example.com')
+]
+
+
+# Rest of your code that uses the `users` variable
+
+
+
 
 # Setup Flask app
 app = Flask(__name__)
@@ -210,13 +229,12 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-from your_application import views  # Replace your_application with the name of your main Flask application file (without the .py)
 
 from routes import *
 
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import boto3
+
 import os
 
 app = Flask(__name__)
@@ -267,7 +285,7 @@ if __name__ == '__main__':
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from google.cloud import storage
-import boto3
+
 import os
 from reportlab.pdfgen import canvas
 from docx import Document
