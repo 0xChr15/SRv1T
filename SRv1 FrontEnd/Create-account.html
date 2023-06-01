@@ -8,15 +8,15 @@
   <div class="create-account-container">
     <form id="create-account-form">
       <label for="name">Name:</label>
-      <input type="text" id="name" name="name">
+      <input type="text" id="name" name="name" required>
       <label for="role">Role:</label>
-      <input type="text" id="role" name="role">
+      <input type="text" id="role" name="role" required>
       <label for="create-username">Create Username:</label>
-      <input type="text" id="create-username" name="create-username" maxlength="16" pattern="[a-z0-9]+">
+      <input type="text" id="create-username" name="create-username" maxlength="16" pattern="[a-z0-9]+" required>
       <label for="create-password">Create Password:</label>
-      <input type="password" id="create-password" name="create-password" minlength="6" maxlength="12">
+      <input type="password" id="create-password" name="create-password" minlength="6" maxlength="12" required>
       <label for="confirm-password">Confirm Password:</label>
-      <input type="password" id="confirm-password" name="confirm-password" minlength="6" maxlength="12">
+      <input type="password" id="confirm-password" name="confirm-password" minlength="6" maxlength="12" required>
       <button type="submit">Create Account</button>
     </form>
   </div>

@@ -36,3 +36,4 @@ createAccountForm.addEventListener('submit', (event) => {
   }
 });
 
+
